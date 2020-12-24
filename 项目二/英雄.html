@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../jquery.js"></script>
+    <script src="../template-web.js"></script>
+    <script src="../libs/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../libs/css/bootstrap.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .nav {
+            text-align: center;
+            height: 50px;
+            background-color: skyblue;
+            margin-bottom: 20px;
+        }
+        .hero {
+            cursor: pointer;
+           
+        height: 50px;
+        padding: 15px 15px;
+        font-size: 18px;
+        line-height: 50px;
+        color: red;
+        }
+
+        #srech {
+            
+            width: 196px;
+            height: 35px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            padding: 6px 12px;
+            margin-right: 10px;
+        }
+        .btn {
+            line-height: 1.3;
+            
+        }
+
+        .row>div{
+            margin-bottom: 10px;
+        }
+
+        .row>div h4{
+            color: red;
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <span class="hero">克鲁赛德战记</span>
+        <input type="text" name="" id="srech" placeholder="请输入英雄姓名">
+        <button class="btn">搜索</button>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <!-- <div class="col-lg-3">
+                <div class="media">
+                    <div class="media-left">
+                      <a href="#">
+                        <img class="media-object" src="http://p0.qhimg.com/dr/72__/t016f2baa3729884891.png" alt="...">
+                      </a>
+                    </div>
+                    <div class="media-body">
+                      <h4 class="media-heading">英雄名称</h4>
+                      英雄技能
+                    </div>
+                  </div> -->
+            </div>
+            
+          </div>
+    </div>
+
+
+    <!-- 引擎模板------------------------ -->
+    <script id="hoerList" type="text/html">
+        
+        {{each list}}
+        <div class="col-lg-3">
+            <div class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <img class="media-object" src={{$value.icon}} alt="...">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">{{$value.name}}</h4>
+                  {{$value.skill}}
+                </div>
+              </div>
+        </div>
+        {{/each}}
+    
+    
+    </script>
+
+    <!-- 逻辑代码 -->
+    <script>
+
+         
+
+        
+            //注册点击事件
+        $('.btn').click(function () {
+             
+           
+            let hero = $('#srech').val()
+
+            //请求数据
+            $.ajax({
+                url:'https://autumnfish.cn/api/cq',
+                type:'get',
+                dataType:'json',
+                data:{query: hero},
+                success: function(backData){
+                    // console.log( backData );
+
+                    //调用核心api
+                    let htmlStr = template('hoerList',backData)
+
+                        console.log( backData );
+                    // 渲染页面
+                    $('.row').html(htmlStr)
+                }
+            });
+        })
+
+        //调用一次
+        $('.btn').click();
+       
+    </script>
+</body>
+
+</html>
